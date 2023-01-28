@@ -56,9 +56,10 @@ httpd.serve_forever()
 ## OUTPUT:
 
 ### server output
-![server side output](./images/serveroutput.png)
+![serveroutput](https://user-images.githubusercontent.com/111277376/215274818-9f01ff5e-3797-499f-ba1d-bcdf8095e28a.png)
+
 ### client output
-![client side output](./images/clientoutput.png)
+![clientoutput](https://user-images.githubusercontent.com/111277376/215274833-8ba0ccbb-c3f1-475d-8337-25df44e085b7.png)
 
 ## RESULT:
 The program is executed succesfully
