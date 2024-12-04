@@ -1,22 +1,27 @@
 from netfilterqueue import NetfilterQueue
-from scapy.all import IP
+from scapy.all import IP, ICMP
 
 def packet_handler(packet):
-    ip_packet = IP(packet.get_payload())
-    print(f"Packet: {ip_packet.summary()}")
-    
-    # Example: Drop all packets
-    if ip_packet.haslayer(IP) and ip_packet[IP].proto == 1:  # ICMP
-        print("Dropping ICMP packet.")
-        packet.drop()
-    else:
-        packet.accept()
+    """
+    Handles each packet passed to the NFQUEUE.
+    Drops ICMP (ping) requests and accepts all others.
+    """
+    ip_packet = IP(packet.get_payload())  # Extract the IP packet
 
+    # Check if the packet is an ICMP request
+    if ip_packet.haslayer(ICMP):
+        print(f"Dropping ICMP packet: {ip_packet.summary()}")
+        packet.drop()  # Drop the packet
+    else:
+        print(f"Accepting packet: {ip_packet.summary()}")
+        packet.accept()  # Accept the packet
+
+# Create and bind the NetfilterQueue
 nfqueue = NetfilterQueue()
-nfqueue.bind(0, packet_handler)
+nfqueue.bind(0, packet_handler)  # Queue number 0, use packet_handler
 
 try:
-    print("Waiting for packets...")
+    print("Listening for packets in NFQUEUE...")
     nfqueue.run()
 except KeyboardInterrupt:
     print("Stopping...")
