@@ -27,3 +27,9 @@ except KeyboardInterrupt:
     print("Stopping...")
 finally:
     nfqueue.unbind()
+
+
+sudo nft flush ruleset
+sudo nft add table inet filter
+sudo nft add chain inet filter input { type filter hook input priority 0\; }
+sudo nft add rule inet filter input ip protocol icmp queue num 0
